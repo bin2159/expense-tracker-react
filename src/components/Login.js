@@ -55,7 +55,7 @@ const Login = () => {
     if (confirmRef.current.value === passwordState.value) {
       setConfirmPasswordIsValid(true);
     } else {
-      setConfirmPasswordIsValid(true);
+      setConfirmPasswordIsValid(false);
     }
   };
   const formSubmitHandler = (e) => {
@@ -80,9 +80,9 @@ const Login = () => {
       if (res.ok) {
         console.log("success");
         return res.json().then((data) => {
-            
-          addTokenId(data.idToken)
-          navigate('home')
+          addTokenId(data.idToken);
+          localStorage.setItem("email", enteredEmail);
+          navigate("updateprofile");
         });
       } else {
         return res.json().then((data) => {
@@ -114,7 +114,9 @@ const Login = () => {
             <Form.Control
               type="email"
               placeholder="name@example.com"
-              isInvalid={emailIsValid === true || null ? false : true}
+              isInvalid={
+                emailIsValid === true || emailIsValid === null ? false : true
+              }
               onChange={emailHandler}
             />
           </FloatingLabel>
@@ -126,7 +128,11 @@ const Login = () => {
             <Form.Control
               type="password"
               placeholder="Password"
-              isInvalid={passwordIsValid === true || null ? false : true}
+              isInvalid={
+                passwordIsValid === true || passwordIsValid === null
+                  ? false
+                  : true
+              }
               onChange={passwordHandler}
             />
           </FloatingLabel>
@@ -139,7 +145,10 @@ const Login = () => {
                 type="password"
                 placeholder="Password"
                 isInvalid={
-                  confirmPasswordIsValid === true || null ? false : true
+                  confirmPasswordIsValid === true ||
+                  confirmPasswordIsValid === null
+                    ? false
+                    : true
                 }
                 onChange={confirmPasswordHandler}
                 ref={confirmRef}
