@@ -101,7 +101,7 @@ const Login = () => {
 
   return (
     <>
-      <Card className="text-center w-50 mx-auto mt-5">
+      <Card className="text-center w-50 mx-auto my-5">
         <Card.Header className="display-5">
           {login ? "Login" : "SignUp"}
         </Card.Header>

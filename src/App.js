@@ -5,6 +5,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/Auth";
 import UpdateProfile from "./Pages/UpdateProfile";
 import ForgotPasswordPage from "./Pages/ForgetPasswordPage";
+import ExpensePage from "./Pages/ExpensePage";
+import { ExpenseProvider } from "./context/ExpenseContext";
+import authLoader from "./util/authLoader";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -13,21 +17,24 @@ function App() {
       element: <Roots />,
       children: [
         {
-          path: "/login",
+          path: "login",
           children: [
             { index: true, element: <LoginPage /> },
             { path: "forgotpassword", element: <ForgotPasswordPage /> },
             { path: "updateprofile", element: <UpdateProfile /> },
           ],
         },
-
+        { path: "expenses", element: <ExpensePage /> ,loader:authLoader},
         { path: "home", element: <HomePage /> },
+        {path:'*',element:<LoginPage/>}
       ],
     },
   ]);
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <ExpenseProvider>
+        <RouterProvider router={router} />
+      </ExpenseProvider>
     </AuthProvider>
   );
 }

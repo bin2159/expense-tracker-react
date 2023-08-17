@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Auth from "../context/Auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
     const authCtx=useContext(Auth)
@@ -22,7 +22,7 @@ const NavBar = () => {
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <NavLink className={'my-auto mx-1'} to='expenses' style={({isActive})=>isActive?{color:'white'}:{color:'gray',textDecoration:'none',"&:hover":{color:'white'}}}>Expenses</NavLink>
             {isLoggedIn&&<Button variant="dark" onClick={logoutHandler}>Logout</Button>}
             {!isLoggedIn&&<Button variant="dark"><Link style={{color:'white'}}to='/login'>LogIn</Link></Button>}
           </Nav>
