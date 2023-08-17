@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Auth from "../context/Auth";
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -82,7 +82,7 @@ const Login = () => {
         return res.json().then((data) => {
           addToken(data.idToken);
           localStorage.setItem("email", enteredEmail);
-          navigate("/updateprofile");
+          navigate("updateprofile");
         });
       } else {
         return res.json().then((data) => {
@@ -156,7 +156,7 @@ const Login = () => {
             </FloatingLabel>
           )}
           <div className="text-left me-auto">
-            {login && <Button variant="">Forgot password</Button>}
+            {login && <Button variant=""><Link to='forgotpassword'>Forgot password</Link></Button>}
           </div>
 
           <Button

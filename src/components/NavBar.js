@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Auth from "../context/Auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
     const authCtx=useContext(Auth)
@@ -24,6 +24,7 @@ const NavBar = () => {
             <Nav.Link href="#features">Features</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
             {isLoggedIn&&<Button variant="dark" onClick={logoutHandler}>Logout</Button>}
+            {!isLoggedIn&&<Button variant="dark"><Link style={{color:'white'}}to='/login'>LogIn</Link></Button>}
           </Nav>
         </Container>
       </Navbar>
