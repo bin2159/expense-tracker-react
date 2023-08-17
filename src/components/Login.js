@@ -18,7 +18,7 @@ const passwordReducer = (state, action) => {
 const Login = () => {
   const authCtx = useContext(Auth);
   const {
-    auth: { addTokenId },
+    auth: { addToken },
   } = authCtx;
   const [login, setLogin] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
@@ -80,9 +80,9 @@ const Login = () => {
       if (res.ok) {
         console.log("success");
         return res.json().then((data) => {
-          addTokenId(data.idToken);
+          addToken(data.idToken);
           localStorage.setItem("email", enteredEmail);
-          navigate("updateprofile");
+          navigate("/updateprofile");
         });
       } else {
         return res.json().then((data) => {

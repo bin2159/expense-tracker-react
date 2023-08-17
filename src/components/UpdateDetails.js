@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/esm/Button";
@@ -9,7 +9,6 @@ const UpdateDetails = () => {
   const [editForm,setEditForm]=useState(false)
   const [data,setData]=useState({name:'',email:'',url:''})
   const token=localStorage.getItem('token')
-
   const showFormHandler = () => {
     setShowForm((prev) => !prev);
   };
@@ -60,27 +59,11 @@ const UpdateDetails = () => {
         return data
     }
     catch(error){
+        alert(error.message)
         console.log(error)
     }
   }
-  const verifyEmailHandler=async()=>{
-    const input={
-        requestType:'VERIFY_EMAIL',    
-        idToken:token
-    }
-    try{
-        const response =await fetch('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBbfM-Y6Bv3aSPRNlB9S7qZFxVHuvF--l8',{
-            method:'POST',
-            body:JSON.stringify(input)
-        })
-        const data=await response.json()
-        console.log(data)
-    }
-    catch(error){
-        alert(error)
-        console.log(error)
-    }
-  }
+  
   const handleChange=(e)=>{
     setData(prev=>({...prev,[e.target.name]:e.target.value}))
   }
@@ -95,11 +78,7 @@ const UpdateDetails = () => {
           >
             Complete your profile
           </Button>
-          <Button className="mt-5 ms-5"
-            variant="dark"
-            onClick={verifyEmailHandler}>
-            Verify Email
-          </Button>
+          
         </div>
       )}
 

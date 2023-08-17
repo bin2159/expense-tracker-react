@@ -12,7 +12,7 @@ function App() {
       path: "/",
       element: <Roots />,
       children: [
-        { index: true, element: <LoginPage /> },
+        { path:"login", element: <LoginPage /> },
         { path: "home", element: <HomePage /> },
         {path:'updateprofile',element:<UpdateProfile/>}
       ],
