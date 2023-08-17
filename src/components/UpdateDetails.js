@@ -63,6 +63,24 @@ const UpdateDetails = () => {
         console.log(error)
     }
   }
+  const verifyEmailHandler=async()=>{
+    const input={
+        requestType:'VERIFY_EMAIL',    
+        idToken:token
+    }
+    try{
+        const response =await fetch('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBbfM-Y6Bv3aSPRNlB9S7qZFxVHuvF--l8',{
+            method:'POST',
+            body:JSON.stringify(input)
+        })
+        const data=await response.json()
+        console.log(data)
+    }
+    catch(error){
+        alert(error)
+        console.log(error)
+    }
+  }
   const handleChange=(e)=>{
     setData(prev=>({...prev,[e.target.name]:e.target.value}))
   }
@@ -71,11 +89,16 @@ const UpdateDetails = () => {
       {!showForm && (
         <div className="text-center">
           <Button
-            className="mt-5 text-center"
+            className="mt-5"
             variant="dark"
             onClick={showFormHandler}
           >
             Complete your profile
+          </Button>
+          <Button className="mt-5 ms-5"
+            variant="dark"
+            onClick={verifyEmailHandler}>
+            Verify Email
           </Button>
         </div>
       )}
