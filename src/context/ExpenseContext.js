@@ -40,7 +40,7 @@ export const ExpenseProvider = ({ children }) => {
           console.log(error);
         }
       })();
-      return [...prev, [data, expense]];
+      return [...prev, [ data, expense]];
     });
   };
   const editExpenseHandler = (expense) => {

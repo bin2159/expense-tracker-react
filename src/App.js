@@ -31,11 +31,11 @@ function App() {
     },
   ]);
   return (
-    <AuthProvider>
+    // <AuthProvider>
       <ExpenseProvider>
         <RouterProvider router={router} />
       </ExpenseProvider>
-    </AuthProvider>
+    // </AuthProvider>
   );
 }
 

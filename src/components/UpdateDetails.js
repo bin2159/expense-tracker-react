@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/esm/Button";
@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 
 const UpdateDetails = () => {
   const [showForm, setShowForm] = useState(false);
+  const [updated,setUpdated]=useState(false)
   const [editForm,setEditForm]=useState(false)
   const [data,setData]=useState({name:'',email:'',url:''})
   const token=localStorage.getItem('token')
@@ -23,7 +24,7 @@ const UpdateDetails = () => {
     if(editForm){
         input.email=data.email 
     }
-    console.log('gdnzf',input)
+    
     try {
       const response = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBbfM-Y6Bv3aSPRNlB9S7qZFxVHuvF--l8",
@@ -34,7 +35,7 @@ const UpdateDetails = () => {
         }
       );
         const data = await response.json();
-        console.log(data)
+        
       const data1=await getResponse()
       console.log(data1)
       setEditForm(true)
@@ -56,6 +57,7 @@ const UpdateDetails = () => {
             body:JSON.stringify(input)
         })
         const data=await response.json()
+        setData(prev=>({...prev,email:data.users[0].email}))
         return data
     }
     catch(error){
@@ -63,9 +65,19 @@ const UpdateDetails = () => {
         console.log(error)
     }
   }
-  
+  useEffect(()=>{
+    getResponse()
+  },[])
   const handleChange=(e)=>{
     setData(prev=>({...prev,[e.target.name]:e.target.value}))
+  }
+
+  const confirmHandler=()=>{
+    setUpdated(true)
+  }
+
+  const cancelHandler=()=>{
+    setEditForm(false)
   }
   return (
     <>
@@ -84,7 +96,8 @@ const UpdateDetails = () => {
 
       {showForm && (
         <Card style={{ width: "30rem" }} className="mx-auto mt-5">
-          <Card.Body>
+          {updated&&<Card.Body className="m-auto">Profile Updated</Card.Body>}
+          {!updated&&<Card.Body>
             <Card.Title className="my-3">Contact Details</Card.Title>
             <Card.Text>
               <InputGroup className="mb-3">
@@ -99,7 +112,7 @@ const UpdateDetails = () => {
                   onChange={handleChange}
                 />
               </InputGroup>
-              {editForm&&<InputGroup className="mb-3">
+              <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">
                   Email
                 </InputGroup.Text>
@@ -111,7 +124,7 @@ const UpdateDetails = () => {
                   onChange={handleChange}
                   
                 />
-              </InputGroup>}
+              </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">
                   Url
@@ -126,14 +139,17 @@ const UpdateDetails = () => {
               </InputGroup>
             </Card.Text>
             <Card.Link>
-              <Button variant="dark" onClick={formSubmitHandler}>
+              {!editForm&&<Button variant="dark" onClick={formSubmitHandler}>
                 Update
-              </Button>
+              </Button>}
+              {editForm&&<Button variant="dark" onClick={confirmHandler}>
+                Confirm
+              </Button>}
             </Card.Link>
             <Card.Link>
-              <Button variant="dark">Cancel</Button>
+              <Button variant="dark" onClick={cancelHandler}>Cancel</Button>
             </Card.Link>
-          </Card.Body>
+          </Card.Body>}
         </Card>
       )}
     </>

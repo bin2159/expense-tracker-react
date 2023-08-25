@@ -5,11 +5,15 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import ExpenseContext from "../context/ExpenseContext";
-const ExpenseForm = ({ data, setData, isEdit, setEditHandler }) => {
-  const expenseCtx = useContext(ExpenseContext);
-  const {
-    expenses: { addExpense, editExpense },
-  } = expenseCtx;
+import { expenseActions } from "../store/expense";
+import { useDispatch } from "react-redux";
+const ExpenseForm = ({ data, setData, isEdit, setEditHandlerOff }) => {
+  const dispatch = useDispatch();
+  // const expenseCtx = useContext(ExpenseContext);
+  // const {
+  //   expenses: { addExpense, editExpense },
+  // } = expenseCtx;
+  const email = localStorage.getItem("email").replace(/[@.]/g, "");
   const inputChangeHandler = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -18,24 +22,81 @@ const ExpenseForm = ({ data, setData, isEdit, setEditHandler }) => {
     const input = {
       ...data,
     };
-    addExpense(input);
+    //addExpense(input)
+
+    let inputId;
+    const addExpenseNet = async () => {
+      try {
+        const response = await fetch(
+          `https://expense-tracker-data-b65bd-default-rtdb.firebaseio.com/${email}.json`,
+          {
+            method: "POST",
+            body: JSON.stringify(input),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        inputId = await response.json();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    addExpenseNet();
+
+    dispatch(expenseActions.addExpense([inputId, input]));
     setData({ desc: "", cat: "", money: "" });
   };
   const editSubmitHandler = (e) => {
     e.preventDefault();
     const input = { ...data };
-    editExpense(input);
-    setEditHandler();
+    const editExpenseNet = async () => {
+      try {
+        const response = await fetch(
+          `https://expense-tracker-data-b65bd-default-rtdb.firebaseio.com/${email}/${input.id}.json`,
+          {
+            method: "PUT",
+            body: JSON.stringify(input),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        // setExpenseList((prev) => {
+        //     const editExpenseIndex = prev.findIndex((expenseItem) => {
+        //       return expenseItem[0] === expense.id;
+        //     });
+        //     console.log(editExpenseIndex);
+        //     const updatedExpense= {
+        //       cat: expense.cat,
+        //       desc: expense.desc,
+        //       money: expense.money,
+        //     };
+        //     let newExpenseList=[...prev]
+        //     newExpenseList[editExpenseIndex][1]=updatedExpense
+        //     return newExpenseList;
+        //   });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    editExpenseNet();
+    dispatch(expenseActions.editExpense(input));
+    //editExpense(input);
+    setEditHandlerOff();
     setData({ desc: "", cat: "", money: "" });
+  };
+  const cancelSubmitHandler = () => {
+    setData({ desc: "", cat: "", money: "" });
+    setEditHandlerOff();
   };
   return (
     <Card className=" mx-auto my-4 w-50">
       <Card.Body>
-        <Card.Title className="display-6 mb-4">Add Expenses</Card.Title>
+        <Card.Title className="display-6 mb-4">
+          Add Expenses
+        </Card.Title>
+
         <Card.Subtitle className="mb-2 text-muted">
           <Form>
             <Form.Group as={Row} className="mb-3">
-              <Form.Label column sm="2">
+              <Form.Label column sm="2" className="min-width">
                 Description
               </Form.Label>
               <Col sm="10">
@@ -85,9 +146,17 @@ const ExpenseForm = ({ data, setData, isEdit, setEditHandler }) => {
                 </Button>
               )}
               {isEdit && (
-                <Button variant="outline-dark" onClick={editSubmitHandler}>
-                  Edit
-                </Button>
+                <span>
+                  <Button
+                    variant="outline-dark me-5"
+                    onClick={editSubmitHandler}
+                  >
+                    Update
+                  </Button>
+                  <Button variant="outline-dark" onClick={cancelSubmitHandler}>
+                    Cancel
+                  </Button>
+                </span>
               )}
             </div>
           </Form>

@@ -5,6 +5,8 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
 import Auth from "../context/Auth";
+import { authActions } from "../store/auth";
+import { useDispatch } from "react-redux";
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
     return { value: action.val, isValid: action.val.includes("@") };
@@ -16,10 +18,10 @@ const passwordReducer = (state, action) => {
   }
 };
 const Login = () => {
-  const authCtx = useContext(Auth);
-  const {
-    auth: { addToken },
-  } = authCtx;
+  // const authCtx = useContext(Auth);
+  // const {
+  //   auth: { addToken },
+  // } = authCtx;
   const [login, setLogin] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -30,6 +32,7 @@ const Login = () => {
     value: "",
     isValid: null,
   });
+  const dispatch=useDispatch()
   const [confirmPasswordIsValid, setConfirmPasswordIsValid] = useState(null);
   const navigate = useNavigate();
   const confirmRef = useRef();
@@ -78,9 +81,9 @@ const Login = () => {
       headers: { "Content-Type": "application/json" },
     }).then((res) => {
       if (res.ok) {
-        console.log("success");
+        
         return res.json().then((data) => {
-          addToken(data.idToken);
+          dispatch(authActions.addToken(data.idToken));
           localStorage.setItem("email", enteredEmail);
           navigate("updateprofile");
         });
