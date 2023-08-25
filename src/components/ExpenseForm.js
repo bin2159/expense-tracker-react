@@ -87,7 +87,8 @@ const ExpenseForm = ({ data, setData, isEdit, setEditHandlerOff }) => {
     setEditHandlerOff();
   };
   return (
-    <Card className=" mx-auto my-4 w-50">
+    
+      <Card className=" mx-auto w-50">
       <Card.Body>
         <Card.Title className="display-6 mb-4">
           Add Expenses
@@ -164,7 +165,9 @@ const ExpenseForm = ({ data, setData, isEdit, setEditHandlerOff }) => {
         <Card.Text></Card.Text>
       </Card.Body>
     </Card>
-  );
+  
+    
+  )    
 };
 
 export default ExpenseForm;
