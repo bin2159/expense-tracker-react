@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const email = localStorage.getItem("email").replace(/[@.]/g, "");
+let email
+if(localStorage.getItem('email')){
+  email = localStorage.getItem("email").replace(/[@.]/g, "");
+
+}
 
 const initialState={expenseList:[],totalAmount:0}
 const expenseSlice=createSlice({
@@ -8,7 +12,12 @@ const expenseSlice=createSlice({
     initialState,
     reducers:{
       setExpense(state,action){
-        state.expenseList=action.payload
+        if(Array.isArray(action.payload)){
+          state.expenseList=action.payload
+        }else{
+          state.expenseList=[]
+        }
+        
         const total=state.expenseList.reduce((acc,curr)=>acc+Number(curr[1].money),0)
         state.totalAmount=total
       },

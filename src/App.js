@@ -32,9 +32,9 @@ function App() {
   ]);
   return (
     // <AuthProvider>
-      <ExpenseProvider>
+      //<ExpenseProvider>
         <RouterProvider router={router} />
-      </ExpenseProvider>
+      //</ExpenseProvider>
     // </AuthProvider>
   );
 }

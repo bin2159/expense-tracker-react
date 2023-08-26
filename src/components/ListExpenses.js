@@ -19,7 +19,12 @@ const ListExpenses = ({ setData, setEditHandlerOn, setTheme }) => {
   const expenseList = useSelector((state) => state.expense.expenseList);
   const totalAmount = useSelector((state) => state.expense.totalAmount);
   const darkTheme=useSelector(state=>state.theme.darkTheme)
-  const email = localStorage.getItem("email").replace(/[@.]/g, "");
+  let email
+  if(localStorage.getItem("email"))
+  {
+    email = localStorage.getItem("email").replace(/[@.]/g, "");
+  }
+  
 
   const getExpenses = async () => {
     try {
@@ -27,14 +32,17 @@ const ListExpenses = ({ setData, setEditHandlerOn, setTheme }) => {
         `https://expense-tracker-data-b65bd-default-rtdb.firebaseio.com/${email}.json`
       );
       const data = await response.json();
-      const list = Object.entries(data);
-      dispatch(expenseActions.setExpense(list));
+
+      const list = Object.entries(data)||[];
+      return list
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    getExpenses();
+      
+      getExpenses().then(data=>dispatch(expenseActions.setExpense(data)));
+
   }, []);
 
   const editHandler = (id, desc, cat, money) => {

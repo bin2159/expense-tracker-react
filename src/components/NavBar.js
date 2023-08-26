@@ -12,6 +12,7 @@ const NavBar = () => {
     const dispatch=useDispatch()
     // const authCtx=useContext(Auth)
     const isLoggedIn=useSelector(state=>state.auth.isLoggedIn)
+    console.log(isLoggedIn)
     const navigate=useNavigate()
     // const {auth:{isLoggedIn,removeToken}}=authCtx
     const logoutHandler=()=>{
@@ -28,7 +29,7 @@ const NavBar = () => {
             <Nav.Link href="#features">Features</Nav.Link>
             <NavLink className={'my-auto mx-1'} to='expenses' style={({isActive})=>isActive?{color:'white'}:{color:'gray',textDecoration:'none',"&:hover":{color:'white'}}}>Expenses</NavLink>
             {isLoggedIn&&<Button variant="dark" onClick={logoutHandler}>Logout</Button>}
-            {!isLoggedIn&&<Button variant="dark"><Link style={{color:'white'}}to='/login'>LogIn</Link></Button>}
+            {!isLoggedIn&&<Button variant="dark"><Link style={{color:'white',textDecoration:'none'}}to='/login'>LogIn</Link></Button>}
           </Nav>
         </Container>
       </Navbar>

@@ -13,7 +13,11 @@ const ExpenseForm = ({ data, setData, isEdit, setEditHandlerOff }) => {
   // const {
   //   expenses: { addExpense, editExpense },
   // } = expenseCtx;
-  const email = localStorage.getItem("email").replace(/[@.]/g, "");
+  let email
+  if(localStorage.getItem("email"))
+  {
+    email = localStorage.getItem("email").replace(/[@.]/g, "");
+  }
   const inputChangeHandler = (e) => {
     setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
